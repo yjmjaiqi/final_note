@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../img/icon_2.png">
+    <title>新兴之星</title>
+    <link href="../css/foot.css" rel="stylesheet" type="text/css">
+    <link href="../css/cbody.css" rel="stylesheet" type="text/css">
+    <link href="../css/banner.css" rel="stylesheet" type="text/css">
+    <link href="../css/nav.css" rel="stylesheet" type="text/css">
+    <link href="../css/css.css" rel="stylesheet" type="text/css">
+</head>
+<script type="text/javascript" src="/js/notes.js"></script>
+<body>
+<div class="nav">
+    <a class="nav_logo"><img src="../img/logo2.png"></a>
+    <div id="nav_ul">
+        <ul>
+            <li><a th:text="${username}+'个人笔记'" class="nav_a" href="###" target="_self"></a></li>
+            <li class="nav_line">|</li>
+            <li><a class="nav_a" href="###" target="_self">个人中心</a></li>
+            <li class="nav_line">|</li>
+            <li><a class="nav_a" href="###" target="_self">记录笔记</a></li>
+            <li class="nav_line">|</li>
+            <li><a class="nav_a" href="###" target="_self">消息</a></li>
+        </ul>
+    </div>
+</div>
+
+
+<div class="banner">
+    <img id="banner_img" src="../img/banner.png">
+    <div id="banner_text">
+        <a th:text="${username}+'个人笔记'" id="banner_text_a" href="#" target="_self"></a><br>
+        <div id="banner_content">
+            <ul>
+                <li><a href="/user/login" target="_self">退出登录</a></li>
+                <li class="nav_line">|</li>
+                <li class="nav_line">|</li>
+                <li><a href="/shareNote/share" target="_self">共享笔记</a></li>
+                <li class="nav_line">|</li>
+                <li class="nav_line">|</li>
+                <li><a href="/shareNote/shareUser" target="_self">个人分享</a></li>
+                <li class="nav_line">|</li>
+                <li class="nav_line">|</li>
+                <li><a href="/shareNote/shareClass" target="_self">班级资讯</a></li>
+                <li class="nav_line">|</li>
+                <li class="nav_line">|</li>
+                <li><a href="/shareNote/shareAcademy" target="_self">院校资讯</a></li>
+                <li>
+                    <!--                    <form action="/note/selectNote" method="post" enctype="multipart/form-data">-->
+                    <input id="title" type="text" style="width: 70px" name="title" placeholder="查询笔记名">
+                    <input id="select" type="submit" value="查询">
+                    <!--                    </form>-->
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="cbody">
+    <div class="cbody_left">
+        <div id="gr">
+            <div class="cbody_bar">
+                <span><b>个人资料</b><a class="cbody_bar_span_a" href="###" target="_self">[管理]</a></span>
+            </div>
+            <div id="gr_tou">
+                <img id="gr_touxiang" src="../img/girl.png">
+            </div>
+            <span th:text="${username}" id="name"></span><br/>
+            <span id="name"><a href="../note/addNote" style="color: black">[发表笔记]</a></span>
+            <div id="weibo">
+                <span><img id="weibo_icon" src="../img/icon_1.png">笔记</span>
+            </div>
+            <hr>
+        </div>
+        <div class="panel" id="fk">
+            <div class="cbody_bar">
+                <div id="fk_list">
+                    <span><b th:text="'笔记篇目'+${page.count}+'条'+'(3/页)'+'共'+${page.countPage}+'页'"></b><a
+                            class="cbody_bar_span_a" href="###" target="_self">[管理]</a></span>
+                    <div class="banner_as">
+                        <ul th:each="note : ${notes}">
+                            <img class="fk_img" src="../img/costomer.png">
+                            <li th:text="${note.note_title}"></li>
+                            <span th:text="'修改时间'+${note.alter_time}" class="fk_time"></span>
+                        </ul>
+<!--                        <hr>-->
+                        <br>
+                    </div>
+                    <center>
+                        <input type="text" id="upInput" style="width: 40px" value="上一页" readonly>&nbsp;
+                        <input type="text" id="nextInput" style="width: 40px" value="下一页" readonly>&nbsp;
+                        <input type="text" id="firstInput" style="width: 30px" value="首页" readonly>&nbsp;
+                        <input type="text" id="endInput" style="width: 30px" value="尾页" readonly>&nbsp;
+                        <br/>
+                        当前页-<b style="font-size: 20px" id="currentPage">1</b>-
+                    </center>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="panel" id="lx">
+            <div class="cbody_bar">
+                <div>
+                    <span><b>佳期QQ二维码</b><a class="cbody_bar_span_a" href="###" target="_self">[管理]</a></span>
+                    <div id="lx_img">
+                        <img src="../img/erweima(1)(1).png">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cbody_right">
+        <div th:each="note : ${notes}" id="bw">
+            <div>
+                <div id="cbody_bar_r">
+                    <span><b>双击笔记共享</b>
+                        <a onclick="cancelUser()" style="color: #2ac87e" class="cancelShare" th:value="${note.id}">取消共享]</a>
+                        <a onclick="shareUser()" style="color: #2ac87e" class="shareValue" th:value="${note.id}">[共享用户|</a>
+                        <a onclick="cancelClass()" style="color: #007aff" class="cancelShare" th:value="${note.id}">取消共享]</a>
+                        <a onclick="shareClass()" style="color: #007aff" class="shareValue" th:value="${note.id}">[共享班级|</a>
+                        <a onclick="cancelAcademy()" style="color: #8a6de9" class="cancelShare" th:value="${note.id}">取消共享]</a>
+                        <a onclick="shareAcademy()" style="color: #8a6de9" class="shareValue" th:value="${note.id}">[共享学院|</a>
+                        <a onclick="cancelShare()" style="color: #f0ad4e" class="cancelShare" th:value="${note.id}">|取消共享笔记]</a>
+                        <a onclick="shareNote()" style="color: #f0ad4e" class="shareValue" th:value="${note.id}">[点我共享笔记</a>
+<!--                        <a style="color: #2ac87e" th:text="'['+${note.shareid}+']'"></a>-->
+                    </span>
+                </div>
+            </div>
+
+            <div class="bw_text">
+                <a th:text="${note.note_title}" class="bw_text_title" href="#"></a>
+                <span th:text="('发表时间:'+${note.note_time})" class="title_span"></span>
+                <a href="#">
+                    <input style="background-color: cyan" type="button" value="[编辑]" class="bw_text_title_bt"
+                           target="_self">
+                </a>
+                <a th:href="'/note/deleteNote?id='+${note.id}">
+                    <input style="background-color: red" type="button" value="[删除]" class="bw_text_title_bt"
+                           target="_self">
+                </a>
+                <a th:href="'/note/alterNote?id='+${note.id}">
+                    <input style="background-color: greenyellow" type="button" value="[修改万物]" class="bw_text_title_bt"
+                           target="_self">
+                </a>
+
+                <br/>
+                <br>
+                <br>
+                <div th:text="${note.note_content}" class="text_text"></div>
+            </div>
+            <br/>
+            <hr class="bw_hr">
+
+            <br/>
+            <br/>
+            <br/>
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+<div class="foot">
+    <p><a href="###" target="_self">新兴之星NOTE意见反馈留言板</a><a href="###" target="_self">不良信息反馈</a>电话：15707962445
+        提示音后按1键（按当地市话标准计费）　欢迎批评指正</p>
+    <ul>
+        <li>简介</li>
+        <li>|</li>
+        <li>About xin</li>
+        <li>|</li>
+        <li>广告服务</li>
+        <li>|</li>
+        <li>联系我们</li>
+        <li>|</li>
+        <li>招聘信息</li>
+        <li>|</li>
+        <li>网站律师</li>
+        <li>|</li>
+        <li>SINA English</li>
+        <li>|</li>
+        <li>会员注册</li>
+        <li>|</li>
+        <li>产品答疑</li>
+    </ul>
+    <p>Copyright © 1996 - 2016 xin Corporation, All Rights Reserved</p>
+    <p>新兴之星 版权所有</p>
+</div>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/shareNote.js"></script>
+<script>
+
+    let currentPage = [[${page.currentPage}]];
+
+    $(document).ready(function () {
+        // 笔记共享
+        // 模糊查询
+        $("#select").click(function () {
+            const title = document.getElementById("title").value
+            const htmlobj = $.ajax({url: "/note/selectNote?title=" + title, async: false});
+            const json = JSON.parse(htmlobj.responseText);
+            console.log("jsons=" + json)
+            let select = '';
+            // let banner = '';
+            for (const note in json) {
+                select += '<div id="bw">\n' +
+                    '            <div>\n' +
+                    '                <div id="cbody_bar_r">\n' +
+                    '                   <span><b>双击笔记共享</b><a onclick="cancelUser()" style="color: #2ac87e" class="cancelShare" value="'+json[note].id+'">取消共享]</a> ' +
+                    '                                          <a onclick="shareUser()" style="color: #2ac87e" class="shareValue" value="'+json[note].id+'">[共享用户|</a> ' +
+                    '                                          <a onclick="cancelClass()" style="color: #007aff" class="cancelShare" value="'+json[note].id+'">取消共享]</a> ' +
+                    '                                          <a onclick="shareClass()" style="color: #007aff" class="shareValue" value="'+json[note].id+'">[共享班级|</a> ' +
+                    '                                          <a onclick="cancelAcademy()" style="color: #8a6de9" class="cancelShare" value="'+json[note].id+'">取消共享]</a> ' +
+                    '                                          <a onclick="shareAcademy()" style="color: #8a6de9" class="shareValue" value="'+json[note].id+'">[共享院校|</a> ' +
+                    '                                          <a onclick="cancelShare()" style="color: #f0ad4e" class="cancelShare" value="'+json[note].id+'">|取消共享笔记]</a> ' +
+                    '                                          <a onclick="shareNote()" style="color: #f0ad4e" class="shareValue" value="'+json[note].id+'">[点我共享笔记</a> ' +
+                    '                                    </span>\n'+
+                    '                </div>\n' +
+                    '            </div>\n' +
+                    '\n' +
+                    '            <div class="bw_text">\n' +
+                    '                <a class="bw_text_title" href="#">' + json[note].note_title + '</a>\n' +
+                    '                <span class="title_span">发表时间:' + json[note].note_time + '</span>\n' +
+                    '                <a href="#">\n' +
+                    '                    <input style="background-color: cyan" type="button" value="[编辑]" class="bw_text_title_bt" target="_self">\n' +
+                    '                </a>\n' +
+                    '                <a href="/note/deleteNote?id=' + json[note].id + '">\n' +
+                    '                    <input style="background-color: red" type="button" value="[删除]" class="bw_text_title_bt" target="_self">\n' +
+                    '                </a>\n' +
+                    '                <a href="/note/alterNote?id=' + json[note].id + '">\n' +
+                    '                    <input style="background-color: greenyellow" type="button" value="[修改万物]" class="bw_text_title_bt" target="_self">\n' +
+                    '                </a>\n' +
+                    '\n' +
+                    '                <br/>\n' +
+                    '                <br>\n' +
+                    '                <br>\n' +
+                    '                <div class="text_text">' + json[note].note_content + '</div>\n' +
+                    '            </div>\n' +
+                    '            <br/>\n' +
+                    '            <hr class="bw_hr">\n' +
+                    '\n' +
+                    '            <br/>\n' +
+                    '            <br/>\n' +
+                    '            <br/>\n' +
+                    '</div>'
+            //     banner += '                  <ul>\n' +
+            //         '                            <img class="fk_img" src="../img/costomer.png">\n' +
+            //         '                            <li>' + json[note].note_title + '</li>\n' +
+            //         '                            <span class="fk_time">修改时间:' + json[note].alter_time + '</span>\n' +
+            //         '                        </ul>\n' +
+            //         '                        <br>'
+            }
+            // $(".banner_as").html(banner);
+            $(".cbody_right").html(select);
+        })
+        // $("#firstInput").ready(function(){
+
+        // 上一页
+        $("#upInput").click(function () {
+            if (currentPage > 1) {
+                currentPage -= 1
+            } else {
+                currentPage = [[${page.firstPage}]]
+            }
+            const htmlobj = $.ajax({url: "/note/page?currentPage=" + currentPage, async: false});
+            const json = JSON.parse(htmlobj.responseText);
+            console.log("jsons=" + json)
+            let upPage = '';
+            let banner = '';
+            for (const note in json) {
+                upPage += '<div id="bw">\n' +
+                    '            <div>\n' +
+                    '                <div id="cbody_bar_r">\n' +
+                    '                   <span><b>双击笔记共享</b><a onclick="cancelUser()" style="color: #2ac87e" class="cancelShare" value="'+json[note].id+'">取消共享]</a> ' +
+                    '                                          <a onclick="shareUser()" style="color: #2ac87e" class="shareValue" value="'+json[note].id+'">[共享用户|</a> ' +
+                    '                                          <a onclick="cancelClass()" style="color: #007aff" class="cancelShare" value="'+json[note].id+'">取消共享]</a> ' +
+                    '                                          <a onclick="shareClass()" style="color: #007aff" class="shareValue" value="'+json[note].id+'">[共享班级|</a> ' +
+                    '                                          <a onclick="cancelAcademy()" style="color: #8a6de9" class="cancelShare" value="'+json[note].id+'">取消共享]</a> ' +
+                    '                                          <a onclick="shareAcademy()" style="color: #8a6de9" class="shareValue" value="'+json[note].id+'">[共享院校|</a> ' +
+                    '                                          <a onclick="cancelShare()" style="color: #f0ad4e" class="cancelShare" value="'+json[note].id+'">|取消共享笔记]</a> ' +
+                    '                                          <a onclick="shareNote()" style="color: #f0ad4e" class="shareValue" value="'+json[note].id+'">[点我共享笔记</a> ' +
+                    '                                    </span>\n'+
+                    '                </div>\n' +
+                    '            </div>\n' +
+                    '\n' +
+                    '            <div class="bw_text">\n' +
+                    '                <a class="bw_text_title" href="#">' + json[note].note_title + '</a>\n' +
+                    '                <span class="title_span">发表时间:' + json[note].note_time + '</span>\n' +
+                    '                <a href="#">\n' +
+                    '                    <input style="background-color: cyan" type="button" value="[编辑]" class="bw_text_title_bt" target="_self">\n' +
+                    '                </a>\n' +
+                    '                <a href="/note/deleteNote?id=' + json[note].id + '">\n' +
+                    '                    <input style="background-color: red" type="button" value="[删除]" class="bw_text_title_bt" target="_self">\n' +
+                    '                </a>\n' +
+                    '                <a href="/note/alterNote?id=' + json[note].id + '">\n' +
+                    '                    <input style="background-color: greenyellow" type="button" value="[修改万物]" class="bw_text_title_bt" target="_self">\n' +
+                    '                </a>\n' +
+                    '\n' +
+                    '                <br/>\n' +
+                    '                <br>\n' +
+                    '                <br>\n' +
+                    '                <div class="text_text">' + json[note].note_content + '</div>\n' +
+                    '            </div>\n' +
+                    '            <br/>\n' +
+                    '            <hr class="bw_hr">\n' +
+                    '\n' +
+                    '            <br/>\n' +
+                    '            <br/>\n' +
+                    '            <br/>\n' +
+                    '</div>'
+                banner += '                  <ul>\n' +
+                    '                            <img class="fk_img" src="../img/costomer.png">\n' +
+                    '                            <li>' + json[note].note_title + '</li>\n' +
+                    '                            <span class="fk_time">修改时间:' + json[note].alter_time + '</span>\n' +
+                    '                        </ul>\n' +
+                    '                        <br>'
+            }
+            $(".banner_as").html(banner);
+            $(".cbody_right").html(upPage);
+            document.getElementById("currentPage").innerHTML = currentPage;
+        });
+        // 下一页
+        $("#nextInput").click(function () {
+            if (currentPage < [[${page.countPage}]]) {
+                currentPage += 1
+            } else {
+                currentPage = [[${page.countPage}]]
+            }
+            const htmlobj = $.ajax({url: "/note/page?currentPage=" + currentPage, async: false});
+            const json = JSON.parse(htmlobj.responseText);
+            console.log("jsons=" + json)
+            let nextPage = '';
+            let banner = '';
+            for (const note in json) {
+                nextPage += '<div id="bw">\n' +
+                    '            <div>\n' +
+                    '                <div id="cbody_bar_r">\n' +
+                    '                   <span><b>双击笔记共享</b><a onclick="cancelUser()" style="color: #2ac87e" class="cancelShare" value="'+json[note].id+'">取消共享]</a> ' +
+                    '                                          <a onclick="shareUser()" style="color: #2ac87e" class="shareValue" value="'+json[note].id+'">[共享用户|</a> ' +
+                    '                                          <a onclick="cancelClass()" style="color: #007aff" class="cancelShare" value="'+json[note].id+'">取消共享]</a> ' +
+                    '                                          <a onclick="shareClass()" style="color: #007aff" class="shareValue" value="'+json[note].id+'">[共享班级|</a> ' +
+                    '                                          <a onclick="cancelAcademy()" style="color: #8a6de9" class="cancelShare" value="'+json[note].id+'">取消共享]</a> ' +
+                    '                                          <a onclick="shareAcademy()" style="color: #8a6de9" class="shareValue" value="'+json[note].id+'">[共享院校|</a> ' +
+                    '                                          <a onclick="cancelShare()" style="color: #f0ad4e" class="cancelShare" value="'+json[note].id+'">|取消共享笔记]</a> ' +
+                    '                                          <a onclick="shareNote()" style="color: #f0ad4e" class="shareValue" value="'+json[note].id+'">[点我共享笔记</a> ' +
+                    '                                    </span>\n'+
+                    '                </div>\n' +
+                    '            </div>\n' +
+                    '\n' +
+                    '            <div class="bw_text">\n' +
+                    '                <a class="bw_text_title" href="#">' + json[note].note_title + '</a>\n' +
+                    '                <span class="title_span">发表时间:' + json[note].note_time + '</span>\n' +
+                    '                <a href="#">\n' +
+                    '                    <input style="background-color: cyan" type="button" value="[编辑]" class="bw_text_title_bt" target="_self">\n' +
+                    '                </a>\n' +
+                    '                <a href="/note/deleteNote?id=' + json[note].id + '">\n' +
+                    '                    <input style="background-color: red" type="button" value="[删除]" class="bw_text_title_bt" target="_self">\n' +
+                    '                </a>\n' +
+                    '                <a href="/note/alterNote?id=' + json[note].id + '">\n' +
+                    '                    <input style="background-color: greenyellow" type="button" value="[修改万物]" class="bw_text_title_bt" target="_self">\n' +
+                    '                </a>\n' +
+                    '\n' +
+                    '                <br/>\n' +
+                    '                <br>\n' +
+                    '                <br>\n' +
+                    '                <div class="text_text">' + json[note].note_content + '</div>\n' +
+                    '            </div>\n' +
+                    '            <br/>\n' +
+                    '            <hr class="bw_hr">\n' +
+                    '\n' +
+                    '            <br/>\n' +
+                    '            <br/>\n' +
+                    '            <br/>\n' +
+                    '</div>'
+                banner += '                  <ul>\n' +
+                    '                            <img class="fk_img" src="../img/costomer.png">\n' +
+                    '                            <li>' + json[note].note_title + '</li>\n' +
+                    '                            <span class="fk_time">修改时间:' + json[note].alter_time + '</span>\n' +
+                    '                        </ul>\n' +
+                    '                        <br>'
+            }
+            $(".banner_as").html(banner);
+            $(".cbody_right").html(nextPage);
+            document.getElementById("currentPage").innerHTML = currentPage;
+        });
+        // 首页
+        $("#firstInput").click(function () {
+            currentPage = [[${page.firstPage}]]
+            const htmlobj = $.ajax({url: "/note/page?currentPage=" + currentPage, async: false});
+            const json = JSON.parse(htmlobj.responseText);
+            console.log("jsons=" + json)
+            let firstPage = '';
+            let banner = '';
+            for (const note in json) {
+                firstPage += '<div id="bw">\n' +
+                    '            <div>\n' +
+                    '                <div id="cbody_bar_r">\n' +
+                    '                   <span><b>双击笔记共享</b><a onclick="cancelUser()" style="color: #2ac87e" class="cancelShare" value="'+json[note].id+'">取消共享]</a> ' +
+                    '                                          <a onclick="shareUser()" style="color: #2ac87e" class="shareValue" value="'+json[note].id+'">[共享用户|</a> ' +
+                    '                                          <a onclick="cancelClass()" style="color: #007aff" class="cancelShare" value="'+json[note].id+'">取消共享]</a> ' +
+                    '                                          <a onclick="shareClass()" style="color: #007aff" class="shareValue" value="'+json[note].id+'">[共享班级|</a> ' +
+                    '                                          <a onclick="cancelAcademy()" style="color: #8a6de9" class="cancelShare" value="'+json[note].id+'">取消共享]</a> ' +
+                    '                                          <a onclick="shareAcademy()" style="color: #8a6de9" class="shareValue" value="'+json[note].id+'">[共享院校|</a> ' +
+                    '                                          <a onclick="cancelShare()" style="color: #f0ad4e" class="cancelShare" value="'+json[note].id+'">|取消共享笔记]</a> ' +
+                    '                                          <a onclick="shareNote()" style="color: #f0ad4e" class="shareValue" value="'+json[note].id+'">[点我共享笔记</a> ' +
+                    '                                    </span>\n'+
+                    '                </div>\n' +
+                    '            </div>\n' +
+                    '\n' +
+                    '            <div class="bw_text">\n' +
+                    '                <a class="bw_text_title" href="#">' + json[note].note_title + '</a>\n' +
+                    '                <span class="title_span">发表时间:' + json[note].note_time + '</span>\n' +
+                    '                <a href="#">\n' +
+                    '                    <input style="background-color: cyan" type="button" value="[编辑]" class="bw_text_title_bt" target="_self">\n' +
+                    '                </a>\n' +
+                    '                <a href="/note/deleteNote?id=' + json[note].id + '">\n' +
+                    '                    <input style="background-color: red" type="button" value="[删除]" class="bw_text_title_bt" target="_self">\n' +
+                    '                </a>\n' +
+                    '                <a href="/note/alterNote?id=' + json[note].id + '">\n' +
+                    '                    <input style="background-color: greenyellow" type="button" value="[修改万物]" class="bw_text_title_bt" target="_self">\n' +
+                    '                </a>\n' +
+                    '\n' +
+                    '                <br/>\n' +
+                    '                <br>\n' +
+                    '                <br>\n' +
+                    '                <div class="text_text">' + json[note].note_content + '</div>\n' +
+                    '            </div>\n' +
+                    '            <br/>\n' +
+                    '            <hr class="bw_hr">\n' +
+                    '\n' +
+                    '            <br/>\n' +
+                    '            <br/>\n' +
+                    '            <br/>\n' +
+                    '</div>'
+                banner += '                  <ul>\n' +
+                    '                            <img class="fk_img" src="../img/costomer.png">\n' +
+                    '                            <li>' + json[note].note_title + '</li>\n' +
+                    '                            <span class="fk_time">修改时间:' + json[note].alter_time + '</span>\n' +
+                    '                        </ul>\n' +
+                    '                        <br>'
+            }
+            $(".banner_as").html(banner);
+            $(".cbody_right").html(firstPage);
+            document.getElementById("currentPage").innerHTML = currentPage;
+        });
+        // 尾页
+        $("#endInput").click(function () {
+            currentPage = [[${page.countPage}]]
+            const htmlobj = $.ajax({url: "/note/page?currentPage=" + currentPage, async: false});
+            const json = JSON.parse(htmlobj.responseText);
+            console.log(json)
+            let endPage = '';
+            let banner = '';
+            for (const note in json) {
+                endPage += '<div id="bw">\n' +
+                    '            <div>\n' +
+                    '                <div id="cbody_bar_r">\n' +
+                    '                   <span><b>双击笔记共享</b><a onclick="cancelUser()" style="color: #2ac87e" class="cancelShare" value="'+json[note].id+'">取消共享]</a> ' +
+                    '                                          <a onclick="shareUser()" style="color: #2ac87e" class="shareValue" value="'+json[note].id+'">[共享用户|</a> ' +
+                    '                                          <a onclick="cancelClass()" style="color: #007aff" class="cancelShare" value="'+json[note].id+'">取消共享]</a> ' +
+                    '                                          <a onclick="shareClass()" style="color: #007aff" class="shareValue" value="'+json[note].id+'">[共享班级|</a> ' +
+                    '                                          <a onclick="cancelAcademy()" style="color: #8a6de9" class="cancelShare" value="'+json[note].id+'">取消共享]</a> ' +
+                    '                                          <a onclick="shareAcademy()" style="color: #8a6de9" class="shareValue" value="'+json[note].id+'">[共享院校|</a> ' +
+                    '                                          <a onclick="cancelShare()" style="color: #f0ad4e" class="cancelShare" value="'+json[note].id+'">|取消共享笔记]</a> ' +
+                    '                                          <a onclick="shareNote()" style="color: #f0ad4e" class="shareValue" value="'+json[note].id+'">[点我共享笔记</a> ' +
+                    '                                    </span>\n'+
+                    '                </div>\n' +
+                    '            </div>\n' +
+                    '\n' +
+                    '            <div class="bw_text">\n' +
+                    '                <a class="bw_text_title" href="#">' + json[note].note_title + '</a>\n' +
+                    '                <span class="title_span">发表时间:' + json[note].note_time + '</span>\n' +
+                    '                <a href="#">\n' +
+                    '                    <input style="background-color: cyan" type="button" value="[编辑]" class="bw_text_title_bt" target="_self">\n' +
+                    '                </a>\n' +
+                    '                <a href="/note/deleteNote?id=' + json[note].id + '">\n' +
+                    '                    <input style="background-color: red" type="button" value="[删除]" class="bw_text_title_bt" target="_self">\n' +
+                    '                </a>\n' +
+                    '                <a href="/note/alterNote?id=' + json[note].id + '">\n' +
+                    '                    <input style="background-color: greenyellow" type="button" value="[修改万物]" class="bw_text_title_bt" target="_self">\n' +
+                    '                </a>\n' +
+                    '\n' +
+                    '                <br/>\n' +
+                    '                <br>\n' +
+                    '                <br>\n' +
+                    '                <div class="text_text">' + json[note].note_content + '</div>\n' +
+                    '            </div>\n' +
+                    '            <br/>\n' +
+                    '            <hr class="bw_hr">\n' +
+                    '\n' +
+                    '            <br/>\n' +
+                    '            <br/>\n' +
+                    '            <br/>\n' +
+                    '</div>'
+                banner += '                  <ul>\n' +
+                    '                            <img class="fk_img" src="../img/costomer.png">\n' +
+                    '                            <li>' + json[note].note_title + '</li>\n' +
+                    '                            <span class="fk_time">修改时间:' + json[note].alter_time + '</span>\n' +
+                    '                        </ul>\n' +
+                    '                        <br>'
+            }
+            $(".banner_as").html(banner);
+            $(".cbody_right").html(endPage);
+            document.getElementById("currentPage").innerHTML = currentPage;
+        });
+    })
+</script>
+</body>
+</html>

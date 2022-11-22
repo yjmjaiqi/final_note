@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>新兴之星</title>
+    <link rel="icon" href="/img/icon_2.png">
+    <link href="/css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!-- -->
+    <script>var __links = document.querySelectorAll('a');
+
+    function __linkClick(e) {
+        parent.window.postMessage(this.href, '*');
+    };
+    for (var i = 0, l = __links.length; i < l; i++) {
+        if (__links[i].getAttribute('data-t') == '_blank') {
+            __links[i].addEventListener('click', __linkClick, false);
+        }
+    }</script>
+    <script src="/js/jquery.min.js"></script>
+    <script>$(document).ready(function (c) {
+        $('.alert-close').on('click', function (c) {
+            $('.message').fadeOut('slow', function (c) {
+                $('.message').remove();
+            });
+        });
+    });
+    </script>
+</head>
+<body style="background-color:mediumpurple">
+<!-- contact-form -->
+<div class="message warning">
+    <div class="inset">
+        <div class="login-head">
+            <h1>用户登录</h1>
+            <div class="alert-close"></div>
+        </div>
+        <form action="/user/login" method="post">
+            <li>
+                <input type="text" name="username" autocomplete="off" class="text" placeholder="请输入用户名"
+                       onfocus="this.value = '';"
+                       onblur="if (this.value == '') {this.value = '';}"><a href="#" class=" icon user"></a>
+            </li>
+            <div class="clear"></div>
+            <li>
+                <input type="password" name="password" autocomplete="off" placeholder="请输入密码(6~16)"
+                       onfocus="this.value = '';"
+                       onblur="if (this.value == '') {this.value = '';}"> <a href="#" class="icon lock"></a>
+            </li>
+            <li>
+                <input type="text" name="code" autocomplete="off" placeholder="请输入验证码" onfocus="this.value = '';"
+                       onblur="if (this.value == '') {this.value = '';}"> <a href="#" class="icon lock"></a>
+            </li>
+            <a style="height:22px;padding-top:2px;" onclick="changeCode()" id="codeEmail"
+               src="">获取验证码</a>
+            <div class="clear"></div>
+            <div class="submit">
+                <input type="submit" onclick="myFunction()" value="登录">
+                <h4><a href="/user/register">注册</a></h4>
+                <div class="clear"></div>
+            </div>
+
+            <script>
+                // qq邮箱验证
+                // function changeCode() {
+
+                // $("#codeEmail").attr("href", "/email/sendEmail?emailReceiver="+emailAddress);
+                $("#codeEmail").click(function () {
+                    const emailAddress = prompt("输入qq邮箱地址");
+                    if(emailAddress==null){
+                    }else {
+                        $.ajax({url: "/email/sendEmail?emailReceiver=" + emailAddress, async: false});
+                    }
+                })
+                // $("#codeEmail").attr("href", "/email/sendEmail?emailReceiver=2334310165@qq.com");
+                // }
+            </script>
+        </form>
+    </div>
+</div>
+</div>
+<div class="clear"></div>
+<!--- footer --->
+<div class="footer">
+    <p>新兴之星 &copy; 2014.</p>
+</div>
+<div style="display:none">
+    <script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script>
+</div>
+</body>
+</html>
