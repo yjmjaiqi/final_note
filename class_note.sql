@@ -1,3 +1,0 @@
-INSERT INTO `class_note` VALUES ('B200603', 16);
-INSERT INTO `class_note` VALUES ('B200603', 16);
-INSERT INTO `class_note` VALUES ('B200603', 12);
